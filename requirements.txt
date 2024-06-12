@@ -1,0 +1,17 @@
+langchain
+openai
+pdfminer
+python-dotenv
+pdfminer.six
+pdf2image 
+pillow 
+pytesseract
+torch
+transformers
+azure-ai-formrecognizer
+PyPDF2
+streamlit
+pymupdf
+surya-ocr
+langchain_community
+langchain_openai
