@@ -46,7 +46,7 @@ def process_chunk(questions_chunk, answers_chunk, analyze_function, headers, tem
 
         #process_fn = partial(process_question, analyze_function, headers, temp_pdf_path=temp_pdf_path, temp_dir=temp_dir)
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=8,) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
             
             
             futures = []
@@ -397,7 +397,7 @@ headers = {
         
 def chunkify(lst, n):
         """Divide list into chunks of size n."""
-        return [lst[i:i + n] for i in range(0, len(lst), n)]       
+        return [lst[i:i + n] for i in range(0, len(lst), n,)]       
 
 def save_questions_to_file(questions, file_path):
         with open(file_path, "w", encoding='utf-8') as file:
@@ -476,7 +476,7 @@ def main():
                     listofanswers = extractor.analyze_read(teachers_answers_pdf)
                  
                 
-
+                st.write("Now Paper Evaluation is Started. You will get to see Marks Very soon. Thanks for the Patience...")
                 start = time.time()
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_pdf:
                     temp_pdf.write(students_answers_pdf.read())
@@ -511,7 +511,7 @@ def main():
      
 
                 end = time.time()
-                st.write(f"Time taken to evaluate all the questions with vision model: {end-start} seconds")
+               # st.write(f"Time taken to evaluate all the questions with vision model: {end-start} seconds")
             except Exception as e:
                 st.error(f"An error occurred: {e}")
                 logger.exception(e)
