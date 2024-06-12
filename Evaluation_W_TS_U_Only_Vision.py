@@ -117,9 +117,10 @@ def analyze_answers(headers, question, answer, answers_pdf, output_folder):
     Review the Answer_Sheet to understand the correct and expected answers for each question in the Question_Paper.
     Analyze each of the Student_Answers in images scene especially the MSQS are written in roman numbers, evaluate them carefully by comparing them to the corresponding Teachers Answers .
     If the question requires the diagram then carefully look at the students answers in images scene and evaluate.
-
+                 
+👉 (Remember): after taking the question number from the given question do not remove it. Give the complete question given to you.    
 👉 (Remember) You should give the same question with question number at the starting of the question. (which contains question number, MaximumMarks and DiagramNeeded) as given to you. Because you don't have the right to give maximummarks to a question or anything.
-               
+             
     As a teacher Consider the following guidelines while consdering and evaluating the given question:
              
 > Ignore Spelling Mistakes.
