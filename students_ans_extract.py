@@ -3,7 +3,7 @@ from azure.ai.formrecognizer import DocumentAnalysisClient
 import streamlit as st
 from openai import OpenAI
 import json
-import os
+import os 
 import sys
 from dotenv import load_dotenv
 from tenacity import retry,stop_after_attempt,wait_random_exponential

@@ -3,7 +3,7 @@ from azure.ai.formrecognizer import DocumentAnalysisClient
 import streamlit as st
 from openai import OpenAI
 import json
-import os,time
+import os,time 
 import sys
 from dotenv import load_dotenv
 load_dotenv()

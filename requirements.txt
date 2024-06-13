@@ -9,7 +9,7 @@ pytesseract
 torch
 transformers
 azure-ai-formrecognizer
-PyPDF2
+PyPDF2 
 streamlit
 pymupdf
 surya-ocr
