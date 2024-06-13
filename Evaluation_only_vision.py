@@ -6,13 +6,13 @@ from extract_questions_for_vision import PDFQuestionExtractor
 import concurrent.futures
 from logger import logger
 
-api_key = os.environ['openai_api_key']
-azure_endpoint = os.environ['azure_endpoint']
-azure_key = os.environ['azure_key']
+# api_key = os.environ['openai_api_key']
+# azure_endpoint = os.environ['azure_endpoint']
+# azure_key = os.environ['azure_key']
 
-# api_key = st.secrets['openai_api_key']
-# azure_endpoint = st.secrets['azure_endpoint']
-# azure_key = st.secrets['azure_key']
+api_key = st.secrets['openai_api_key']
+azure_endpoint = st.secrets['azure_endpoint']
+azure_key = st.secrets['azure_key']
 
 class AI_Evaluate:
     def __init__(self,api_key,azure_key,azure_endpoint):
