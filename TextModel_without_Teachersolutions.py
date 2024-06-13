@@ -6,7 +6,7 @@ from openai import OpenAI
 import json,tempfile
 import io,time,base64,requests,os,fitz
 from extract_questions_for_vision import PDFQuestionExtractor
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from tenacity import (
     retry,
     stop_after_attempt,
@@ -16,7 +16,7 @@ from logger import logger
 import concurrent.futures
 import ast
 
-load_dotenv()
+# load_dotenv()
 from students_ans_extract import PDFStudentAnswerExtractor
 
 # Set up OpenAI API key
