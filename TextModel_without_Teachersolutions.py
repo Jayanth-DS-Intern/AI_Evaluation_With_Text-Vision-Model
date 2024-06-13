@@ -6,8 +6,6 @@ from openai import OpenAI
 import json,tempfile
 import io,time,base64,requests,os,fitz
 from extract_questions_for_vision import PDFQuestionExtractor
-from answers_extract_withpagenumbers import PDFAnswersExtractor
-from page_numbers_extractor import PDFQuestionNumbersExtractor
 from dotenv import load_dotenv
 from tenacity import (
     retry,
