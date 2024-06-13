@@ -6,13 +6,13 @@ from extract_questions_for_vision import PDFQuestionExtractor
 import concurrent.futures
 from logger import logger
 
-# api_key = os.environ['openai_api_key']
-# azure_endpoint = os.environ['azure_endpoint']
-# azure_key = os.environ['azure_key']
+api_key = os.environ['openai_api_key']
+azure_endpoint = os.environ['azure_endpoint']
+azure_key = os.environ['azure_key']
 
-api_key = st.secrets['openai_api_key']
-azure_endpoint = st.secrets['azure_endpoint']
-azure_key = st.secrets['azure_key']
+# api_key = st.secrets['openai_api_key']
+# azure_endpoint = st.secrets['azure_endpoint']
+# azure_key = st.secrets['azure_key']
 
 class AI_Evaluate:
     def __init__(self,api_key,azure_key,azure_endpoint):
@@ -343,7 +343,7 @@ def Analyize_answers(question, answers_pdf, OUTPUT_FOLDER):
         }
         }
     ],
-            "max_tokens": 1200,
+            "max_tokens": 1500,
             "temperature":0,
             "top_p":0.000000000000000001,
             "seed":92,
@@ -438,13 +438,28 @@ def load_textfile(path):
                       content = file.read()
      return content
 
+def reset_app_state(list_of_questions):
+    st.cache_data.clear()
+    if os.path.exists(list_of_questions):
+        os.remove(list_of_questions)
+    st.success("Cache cleared and temporary files removed!")
+
 if __name__ == "__main__":
     st.title("Paper Evaluation with GPT-4o")
     st.sidebar.title("Upload Files")
     questions_pdf = st.sidebar.file_uploader("**Upload Questions**", type=['pdf'])
     answers_pdf = st.sidebar.file_uploader("**Upload Answers**", type=['pdf'])
 
+    checkbox = st.sidebar.checkbox("Check Me to Evaluate Different Question Paper")
+    list_of_questions = "list_of_questions_for_vision.txt"
+
+    if checkbox:
+        reset_app_state(list_of_questions=list_of_questions)
+     
+
     # Button to trigger evaluation
+     
+
     if st.button("Evaluate"):
         if questions_pdf and answers_pdf:
             # evaluate = AI_Evaluate(api_key=api_key,azure_endpoint=azure_endpoint,azure_key=azure_key)
@@ -454,6 +469,7 @@ if __name__ == "__main__":
                 temp_dir = tempfile.mkdtemp(prefix='output_Images_folder')
 
                 list_of_questions = "list_of_questions_for_vision.txt"
+
 
                 if os.path.exists(list_of_questions):
                     list_of_questions = load_textfile(list_of_questions)
@@ -492,6 +508,9 @@ if __name__ == "__main__":
                     file_name = 'Evaluation_sheet_without_teacher_solutions_using_GPT4o.txt'
                     save_evaluated_answers(file_path=file_name,questions=evaluated_sheet)
                     logger.info(f"Saved evaluated sheet to:{file_name}")
+                st.write("Paper Evaluation is done ✅")
+                st.write("Skip the Checkbox at sidebar, if you want to evalute another student answers for the same question paper")
+                 
 
             except Exception as e:
                 st.write(e)

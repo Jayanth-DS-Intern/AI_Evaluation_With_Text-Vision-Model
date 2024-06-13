@@ -436,7 +436,14 @@ def load_textfile(path):
      with open(path,'r') as file:
                       content = file.read()
      return content
-     
+
+def reset_app_state(list_of_questions,listofanswers):
+    st.cache_data.clear()
+    if os.path.exists(list_of_questions):
+        os.remove(list_of_questions)
+    if os.path.exists(listofanswers):
+         os.remove(listofanswers)
+    st.success("Cache cleared and temporary files removed!")  
 
 def main():
     st.title("Paper Evaluation with GPT-4o")
@@ -445,13 +452,18 @@ def main():
     teachers_answers_pdf = st.sidebar.file_uploader("**Upload Teacher's Answers**", type=['pdf'])
     students_answers_pdf = st.sidebar.file_uploader("**Upload Student's Answers**", type=['pdf'])
 
+    questions_file = "listofquestions.txt"
+    answers_file = "listofanswers.txt"
+
+    checkbox = st.sidebar.checkbox("Check Me to Evaluate Different Question Paper")
+
+    if checkbox:
+        reset_app_state(list_of_questions=questions_file,listofanswers=answers_file)
+        
     if st.button("Evaluate"):
         if questions_pdf and teachers_answers_pdf and students_answers_pdf:
             try:
                 temp_dir = tempfile.mkdtemp(prefix='output_Images_folder')
-
-                questions_file = "listofquestions.txt"
-                answers_file = "listofanswers.txt"
 
                 if os.path.exists(questions_file) and os.path.exists(answers_file):
                      try:
@@ -506,12 +518,8 @@ def main():
                     save_questions_to_file(evaluation_sheet,file_path=filename)
                     logger.info(f"Questions saved to {filename}")                                                                                         
  
+                st.write("Skip the Checkbox at sidebar, if you want to evalute another student answers for the same question paper")
                  
-                
-                st.write("------------------------")
-     
-
-                end = time.time()
                # st.write(f"Time taken to evaluate all the questions with vision model: {end-start} seconds")
             except Exception as e:
                 st.error(f"An error occurred: {e}")
