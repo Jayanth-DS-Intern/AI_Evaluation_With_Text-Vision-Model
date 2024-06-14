@@ -20,13 +20,13 @@ import ast
 from students_ans_extract import PDFStudentAnswerExtractor
 
 # Set up OpenAI API key
-# api_key = os.environ['openai_api_key']
-# azure_endpoint = os.environ['azure_endpoint']
-# azure_key = os.environ['azure_key']
+api_key = os.environ['openai_api_key']
+azure_endpoint = os.environ['azure_endpoint']
+azure_key = os.environ['azure_key']
 
-api_key = st.secrets['openai_api_key']
-azure_endpoint = st.secrets['azure_endpoint']
-azure_key = st.secrets['azure_key']
+# api_key = st.secrets['openai_api_key']
+# azure_endpoint = st.secrets['azure_endpoint']
+# azure_key = st.secrets['azure_key']
 
 client = OpenAI(
   api_key= api_key,  # this is also the default, it can be omitted
@@ -221,9 +221,19 @@ def analyze_answers_text_model(question, answers):
     messages = [
         {"role": "system", "content": """You are a teacher who evaluates students answers and give marks based on the MaximumMarks provided for the question and Feedback on the given data.Ignore Spelling Mistakes.
          
-    As a teacher Consider the following guidelines while consdering and evaluating the given question: {question}:
+    As a teacher Consider the following guidelines while consdering and evaluating the given question:
+         
+    👉(Remember)   MCQS or Bits(1 Marks questions) are written in roman numbers or alphabets, When you are evauating Mcqs pick the respective MCQ from the given answers do not take all of them. 
+         For example if you find the text like this: 1. A
+                                                     2. D
+                                                     3. C
+                                                    so on
+         
+         then during evaluation 1st MCQ answer is 1. A and 2nd Mcq answer is 2.D and so on.
 
-         👉 (Remember): after taking the question number from the given question do not remove it. Give the complete question given to you.    
+         It means they are answers for the MCQs (1 Mark questions).
+         
+    👉 (Remember): After taking the question number from the given question do not remove it. Give the complete question given to you.    
          
    1. Compound Questions: If a question contains two or more parts, extract all of them as a single question.
 
@@ -290,7 +300,7 @@ def analyze_answers_text_model(question, answers):
          
          """},
     
-    {"role": "user", "content":f"Now your only task is to evalute the given question:{question} by finding it relavent answer in answers:{answers}. Remember Dont give NONE  as the reponse if you don't find the answer in {answers}, go to next question.You must always use tools."}
+    {"role": "user", "content":f"Now your only task is to evalute the given question:{question} by finding it relavent answer in answers:{answers}. Remember Dont give NONE  as the reponse if you don't find the answer in {answers}, go to next question.You must always use tools. Dont give overall score like this: 0.2, 0.8, 1.6, 4.7 give like this 0,0.5,1,1.5,2,2.5,3,3.5 and so on."}
     ]
 
     response = client.chat.completions.create(
@@ -300,9 +310,10 @@ def analyze_answers_text_model(question, answers):
         seed=92,
         top_p=.0000000000000000000001,
         temperature=0,
-        tool_choice="auto"
+        tool_choice="required",
+        max_tokens=2000
     )
-    print("response-------------->",response)
+  #  print("response-------------->",response)
     response_message = response.choices[0].message
     # response_content = response_message.content
     # return response_content
@@ -501,7 +512,7 @@ def analyze_answers_vision_model(question, temp_pdf_path,temp_dir):
                 ]
                 }
             ],
-            "max_tokens": 300,
+            "max_tokens": 2000,
             "tools": tools2,
         }
 
@@ -773,7 +784,12 @@ if __name__ == "__main__":
                         evaluation_sheet.append(result)
                     save_questions_to_file(evaluation_sheet,file_path=filename)
                     logger.info(f"Questions saved to {filename}")  
-
+                    
+                Marks = 0
+                for item in evaluation_sheet:
+                     Marks = Marks + item['feedback'][0]['Overal Score']
+                st.write(f"Scored Marks: {Marks}")
+                     
                 st.write("Paper Evaluation is done ✅")
                 st.write("Skip the Checkbox at sidebar, if you want to evalute another student answers for the same question paper")
             except Exception as e:

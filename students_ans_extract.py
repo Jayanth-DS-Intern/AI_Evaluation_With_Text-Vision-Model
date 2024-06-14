@@ -76,7 +76,31 @@ class PDFStudentAnswerExtractor:
               5) (iv)
               6) student not provided answer.
 
-        Example 2: Consider the following answer text:
+            Exmple 2: consider the following text:
+              Bits
+                1.
+                D .
+                2.
+                A
+                3.
+                A
+                4
+                C
+             Then Extract them as
+              1) D
+              2) A
+              3) A
+              4) C
+
+              but not extract like this
+
+              a) D
+              b) A
+              c) A
+              d) C
+            remember dont change the subquestion number.
+              
+        Example 3: Consider the following answer text:
               24)
                 from the heart
                 (a) If we remove the izion are from the
@@ -90,7 +114,9 @@ class PDFStudentAnswerExtractor:
       It should be formatted as:
               24) (a) If we remove the iron core from the magnet and then close the circuit, the electromagnet will still work but it will have less magnetic power. (b) If we place a permanent magnet instead of an electromagnet, the hammer will permanently stick to it & the bell will not ring.
               
-        And in the similar way format other questions.      
+        And in the similar way format other questions.   
+
+        Blindly dont format the answers with questions numbers in ascending order starting from 1 - 40, student many or may not wirte all the answers. so be cautious with giving question number to answers.   
              '''},
             {"role": "user", "content": f"Format the given text: {data} and give complete formatted answers in response."}
         ]
@@ -200,7 +226,7 @@ class PDFStudentAnswerExtractor:
             print("response of questions extraction model-------->",response)
             fb = json.loads(response)
             all_the_questions = [item['Student_Answers'] for item in fb['feedback']]
-           # st.write(all_the_questions)
+            st.write(all_the_questions)
 
             file_path = 'Students_answers.txt'
             self.save_questions_to_file(all_the_questions, file_path)
