@@ -226,7 +226,7 @@ class PDFStudentAnswerExtractor:
             print("response of questions extraction model-------->",response)
             fb = json.loads(response)
             all_the_questions = [item['Student_Answers'] for item in fb['feedback']]
-            st.write(all_the_questions)
+          #  st.write(all_the_questions)
 
             file_path = 'Students_answers.txt'
             self.save_questions_to_file(all_the_questions, file_path)

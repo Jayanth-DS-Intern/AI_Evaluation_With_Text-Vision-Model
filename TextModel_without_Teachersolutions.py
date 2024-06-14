@@ -20,13 +20,13 @@ import ast
 from students_ans_extract import PDFStudentAnswerExtractor
 
 # Set up OpenAI API key
-api_key = os.environ['openai_api_key']
-azure_endpoint = os.environ['azure_endpoint']
-azure_key = os.environ['azure_key']
+# api_key = os.environ['openai_api_key']
+# azure_endpoint = os.environ['azure_endpoint']
+# azure_key = os.environ['azure_key']
 
-# api_key = st.secrets['openai_api_key']
-# azure_endpoint = st.secrets['azure_endpoint']
-# azure_key = st.secrets['azure_key']
+api_key = st.secrets['openai_api_key']
+azure_endpoint = st.secrets['azure_endpoint']
+azure_key = st.secrets['azure_key']
 
 client = OpenAI(
   api_key= api_key,  # this is also the default, it can be omitted
